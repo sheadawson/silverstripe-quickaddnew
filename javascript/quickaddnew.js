@@ -19,10 +19,11 @@ jQuery.entwine("quickaddnew", function($) {
 			var self = this;
 
 			// create add new button
-			var button = $("<a />")
+			var button = $("<button />")
+				.addClass()
 				.text('Add New')
 				.attr('href', '#')
-				.addClass("quickaddnew-button")
+				.addClass("quickaddnew-button ss-ui-button ss-ui-button-small")
 				.appendTo(self.parents('div:first'));
 
 			// create dialog	

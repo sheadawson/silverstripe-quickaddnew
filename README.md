@@ -15,7 +15,5 @@ TODO
 ----
 
 Usage Docs
-Composer.json
-Dialog Header - need to update cms css to work with this
-Submit button style for frontend
+Composer json
 
