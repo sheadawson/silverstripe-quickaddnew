@@ -1,7 +1,10 @@
-.cms .quickaddnew-button{
-	/*display: block;*/
+.cms .quickaddnew-field{
 	position: relative;
-	top: -11px;
+}
+.cms .quickaddnew-button{
+	position: absolute;
+	top: 5px;
+	margin-left: 5px;
 }
 
 .quickaddnew-dialog{
