@@ -14,6 +14,8 @@ Usage
 TODO
 ----
 
-Usage Docs
-Composer json
+* Usage Docs
+* Composer json
+* Compatibility with has_many / many_many fields ie. ListBoxField
+
 
