@@ -61,7 +61,7 @@ jQuery.entwine("quickaddnew", function($) {
 				// if this is a multiselect field, send the existing values
 				// along with the form submission so they can be included in the 
 				// replacement field
-				if(self.val().length && typeof self.val() === 'object'){
+				if(typeof self.val() === 'object'){
 					options.data = {
 						existing : self.val().join(',')	
 					}
