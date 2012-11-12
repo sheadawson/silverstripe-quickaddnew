@@ -54,7 +54,7 @@ class QuickAddNewExtension extends Extension {
 	 * this also opens the opportunity to manipulate the form for Frontend uses via an extension 
 	 * @return FormField $this->owner
 	 **/
-	public function useAddNew($class, $sourceCallback, FieldList $fields = null, RequiredField $required = null, $isFrontend = false){
+	public function useAddNew($class, $sourceCallback, FieldList $fields = null, RequiredFields $required = null, $isFrontend = false){
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui.js');
@@ -66,6 +66,8 @@ class QuickAddNewExtension extends Extension {
 		if(!$fields){
 			if(singleton($class)->hasMethod('getAddNewFields')){
 				$fields = singleton($class)->getAddNewFields();
+			}else{
+				$fields = singleton($class)->getCMSFields();
 			}
 		}
 
@@ -73,10 +75,6 @@ class QuickAddNewExtension extends Extension {
 			if(singleton($class)->hasMethod('getAddNewValidator')){
 				$required = singleton($class)->getAddNewValidator();
 			}
-		}
-
-		if(!$fields){
-			return $this->owner; //TODO throw execption?
 		}
 
 		$this->owner->addExtraClass('quickaddnew-field');
@@ -136,7 +134,19 @@ class QuickAddNewExtension extends Extension {
 		$callback = $this->sourceCallback;
 		$items = $callback();
 		$this->owner->setSource($items);
-		$this->owner->setValue($obj->ID);
+
+		// if this field is a multiselect field, we add the new Object ID to the existing 
+		// options that are selected on the field then set that as the value
+		// otherwise we just set the new Object ID as the value
+		if(isset($data['existing'])){
+			$existing = $data['existing'];
+			$value = explode(',', $existing);
+			$value[] = $obj->ID;
+		}else{
+			$value = $obj->ID;
+		}
+
+		$this->owner->setValue($value);
 		$this->owner->setForm($form);
 		return $this->owner->FieldHolder();
 	}

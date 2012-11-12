@@ -34,7 +34,9 @@ jQuery.entwine("quickaddnew", function($) {
 			this.setDialog(dialog);
 
 			// set URL
-			this.setURL(this.parents('form').attr('action') + '/field/' + this.attr('name') + '/AddNewFormHTML');
+			var dialogHTMLURL = this.parents('form').attr('action') + '/field/' + this.attr('name') + '/AddNewFormHTML';
+
+			this.setURL(dialogHTMLURL.replace(/[\[\]']+/g,''));
 			
 			// configure the dialog
 			this.getDialog().data("field", this).dialog({
@@ -53,28 +55,39 @@ jQuery.entwine("quickaddnew", function($) {
 			// handle dialog form submission
 			this.getDialog().on("submit", "form", function() {
 				
-				var dlg = self.getDialog().dialog();
+				var dlg = self.getDialog().dialog(),
+					options = {};
 
-				$(this).ajaxSubmit(function(response) {
+				// if this is a multiselect field, send the existing values
+				// along with the form submission so they can be included in the 
+				// replacement field
+				if(self.val().length && typeof self.val() === 'object'){
+					options.data = {
+						existing : self.val().join(',')	
+					}
+				}
+
+				options.success = function(response) {
 					if($(response).is(".field")) {
 						self.getDialog().empty().dialog("close");
 						self.parents('.field:first').replaceWith(response);
 					} else {
 						self.getDialog().html(response);
 					}
-				});
+				}
+
+				$(this).ajaxSubmit(options);
 
 				return false;
 			});
 		},
 
 		showDialog: function(url) {
-			var self = this,
-				dlg = self.getDialog();
+			var dlg = this.getDialog();
 
 			dlg.empty().dialog("open").parent().addClass("loading");
 
-			dlg.load(self.getURL(), function(){
+			dlg.load(this.getURL(), function(){
 				dlg.parent().removeClass("loading");
 			});
 		}
