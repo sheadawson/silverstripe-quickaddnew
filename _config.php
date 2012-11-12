@@ -8,4 +8,5 @@ if(QUICKADDNEW_MODULE != 'quickaddnew') {
 	);
 }
 
-Object::add_extension('DropdownField', 'QuickAddNewExtension');
+Object::add_extension('OptionsetField', 'QuickAddNewExtension');
+//Object::add_extension('CheckboxSetField', 'QuickAddNewExtension');
