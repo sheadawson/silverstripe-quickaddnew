@@ -31,9 +31,9 @@ Then we can create the form field, calling the closure as the source argument
 
 	$field = DropdownField::create('MyObjectID', 'My Object', $source());
 
-Next, we can tell the field to use and configure quickaddnew. Note: See QuickAddNewExtension::useAddNew for the list of configurations parameters available. These allow you to customise the fields and required fields for the dialog. By default the objects getAddNewFields() or getCMSFields() methods are used
+Next, we can tell the field to use and configure quickaddnew. The first parameter is the class name of the object that will be created. The second is the $source closure  Note: See QuickAddNewExtension::useAddNew() for the list of configurations parameters available. These allow you to customise the fields and required fields (for validation) for the dialog. By default the object class's getAddNewFields() or getCMSFields() methods are used
 		
-	$field->useAddNew('Tag', $source)
+	$field->useAddNew('MyObject', $source)
 
 Add the field to your FieldList
 
