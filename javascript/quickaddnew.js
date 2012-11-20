@@ -6,7 +6,7 @@ jQuery.entwine("quickaddnew", function($) {
 		},
 
 		onclick: function() {
-			this.siblings('.quickaddnew-field:first').showDialog();
+			this.siblings('select.quickaddnew-field:first').showDialog();
 			return false;
 		}
 	});
