@@ -129,26 +129,36 @@ class QuickAddNewExtension extends Extension {
 	public function doAddNew($data, $form){
 		$obj = Object::create($this->addNewClass);
 		$form->saveInto($obj);
-		$obj->write();
+		
+		$validationResult = $obj->validate(); // run the validation on the obj
 
-		$callback = $this->sourceCallback;
-		$items = $callback();
-		$this->owner->setSource($items);
+		if($validationResult->valid()) { // check if the values pass validation
+			$obj->write();
 
-		// if this field is a multiselect field, we add the new Object ID to the existing 
-		// options that are selected on the field then set that as the value
-		// otherwise we just set the new Object ID as the value
-		if(isset($data['existing'])){
-			$existing = $data['existing'];
-			$value = explode(',', $existing);
-			$value[] = $obj->ID;
+			$callback = $this->sourceCallback;
+			$items = $callback();
+			$this->owner->setSource($items);
+
+			// if this field is a multiselect field, we add the new Object ID to the existing
+			// options that are selected on the field then set that as the value
+			// otherwise we just set the new Object ID as the value
+			if(isset($data['existing'])){
+				$existing = $data['existing'];
+				$value = explode(',', $existing);
+				$value[] = $obj->ID;
+			}else{
+				$value = $obj->ID;
+			}
+
+			$this->owner->setValue($value);
+			$this->owner->setForm($form);
+			return $this->owner->FieldHolder();
 		}else{
-			$value = $obj->ID;
+			// if the validation fails we add the error message to the form and
+			// return the whole form which will replace the current one
+			$form->setMessage($validationResult->message(), 'error');
+			return $form->forTemplate();
 		}
-
-		$this->owner->setValue($value);
-		$this->owner->setForm($form);
-		return $this->owner->FieldHolder();
 	}
 
 
