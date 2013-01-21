@@ -129,10 +129,20 @@ class QuickAddNewExtension extends Extension {
 	public function doAddNew($data, $form){
 		$obj = Object::create($this->addNewClass);
 		$form->saveInto($obj);
-		
-		$validationResult = $obj->validate(); // run the validation on the obj
 
-		if($validationResult->valid()) { // check if the values pass validation
+		$customValidation = true;
+		try{
+			$validationResult = $obj->validate(); // run the validation on the obj
+		}
+		catch(Exception $exception){
+			if($exception->getCode() == 2175){ // if the method doesn't exist
+				$customValidation = false;
+			}else{
+				throw $exception;
+			}
+		}
+
+		if (!$customValidation || $validationResult->valid()) { // check if the values pass validation
 			$obj->write();
 
 			$callback = $this->sourceCallback;
