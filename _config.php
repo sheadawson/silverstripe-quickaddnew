@@ -8,5 +8,5 @@ if(QUICKADDNEW_MODULE != 'quickaddnew') {
 	);
 }
 
-Object::add_extension('DropdownField', 'QuickAddNewExtension');
-Object::add_extension('ListboxField', 'QuickAddNewExtension');
+DropdownField::add_extension('QuickAddNewExtension');
+ListboxField::add_extension('QuickAddNewExtension');
