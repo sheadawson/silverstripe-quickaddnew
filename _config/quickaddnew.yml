@@ -1,0 +1,9 @@
+---
+Name: quickaddnew
+---
+DropdownField:
+  extensions:
+    ['QuickAddNewExtension']
+ListboxField:
+  extensions:
+    ['QuickAddNewExtension']
