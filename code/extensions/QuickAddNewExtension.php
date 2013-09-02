@@ -55,6 +55,10 @@ class QuickAddNewExtension extends Extension {
 	 * @return FormField $this->owner
 	 **/
 	public function useAddNew($class, $sourceCallback, FieldList $fields = null, RequiredFields $required = null, $isFrontend = false){
+		if(!is_callable($sourceCallback)){
+			throw new Exception('the useAddNew method must be passed a callable $sourceCallback parameter, ' . gettype($sourceCallback) . ' passed.');
+		}
+
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui.js');
