@@ -134,13 +134,12 @@ class QuickAddNewExtension extends Extension {
 		$obj = Object::create($this->addNewClass);
 		$form->saveInto($obj);
 		
-		$validationResult = $obj->validate();
-		if(!$validationResult->valid()){
-			$form->setMessage($validationResult->message(), 'error');
+		try {
+			$obj->write();	
+		} catch (Exception $e) {
+			$form->setMessage($e->getMessage(), 'error');
 			return $form->forTemplate();
 		}
-
-		$obj->write();
 
 		$callback = $this->sourceCallback;
 		$items = $callback();
