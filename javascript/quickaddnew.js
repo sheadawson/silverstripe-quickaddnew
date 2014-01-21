@@ -6,12 +6,12 @@ jQuery.entwine("quickaddnew", function($) {
 		},
 
 		onclick: function() {
-			this.siblings('select.quickaddnew-field:first').showDialog();
+			this.siblings('.middleColumn > .quickaddnew-field:first').showDialog();
 			return false;
 		}
 	});
 
-	$("select.quickaddnew-field").entwine({
+	$(".middleColumn > .quickaddnew-field").entwine({
 		Loading: null,
 		Dialog:  null,
 		URL:  null,
@@ -34,7 +34,9 @@ jQuery.entwine("quickaddnew", function($) {
 			this.setDialog(dialog);
 
 			// set URL
-			var dialogHTMLURL = this.parents('form').attr('action') + '/field/' + this.attr('name') + '/AddNewFormHTML';
+			var fieldName = this.attr('name');
+			if (this.hasClass('checkboxset')) fieldName = this.find('input:checkbox').attr('name').replace(/\[[0-9]+\]/g, '');
+			var dialogHTMLURL = this.parents('form').attr('action') + '/field/' + fieldName + '/AddNewFormHTML';
 
 			this.setURL(dialogHTMLURL.replace(/[\[\]']+/g,''));
 			
