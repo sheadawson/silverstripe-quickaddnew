@@ -1,17 +1,18 @@
 jQuery.entwine("quickaddnew", function($) {
-	
+	var fieldSelector = '.field.quickaddnew-field .quickaddnew-field';
+
 	$(".quickaddnew-button").entwine({
 		onmatch: function() {
 			var self = this;
 		},
 
 		onclick: function() {
-			this.siblings('.middleColumn > .quickaddnew-field:first').showDialog();
+			this.siblings(fieldSelector).showDialog();
 			return false;
 		}
 	});
 
-	$(".middleColumn > .quickaddnew-field").entwine({
+	$(fieldSelector).entwine({
 		Loading: null,
 		Dialog:  null,
 		URL:  null,
