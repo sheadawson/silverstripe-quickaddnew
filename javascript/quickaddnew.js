@@ -1,17 +1,18 @@
 jQuery.entwine("quickaddnew", function($) {
-	
+	var fieldSelector = '.field.quickaddnew-field .quickaddnew-field';
+
 	$(".quickaddnew-button").entwine({
 		onmatch: function() {
 			var self = this;
 		},
 
 		onclick: function() {
-			this.siblings('select.quickaddnew-field:first').showDialog();
+			this.siblings(fieldSelector).showDialog();
 			return false;
 		}
 	});
 
-	$("select.quickaddnew-field").entwine({
+	$(fieldSelector).entwine({
 		Loading: null,
 		Dialog:  null,
 		URL:  null,
@@ -34,7 +35,9 @@ jQuery.entwine("quickaddnew", function($) {
 			this.setDialog(dialog);
 
 			// set URL
-			var dialogHTMLURL = this.parents('form').attr('action') + '/field/' + this.attr('name') + '/AddNewFormHTML';
+			var fieldName = this.attr('name');
+			if (this.hasClass('checkboxset')) fieldName = this.find('input:checkbox').attr('name').replace(/\[[0-9]+\]/g, '');
+			var dialogHTMLURL = this.parents('form').attr('action') + '/field/' + fieldName + '/AddNewFormHTML';
 
 			this.setURL(dialogHTMLURL.replace(/[\[\]']+/g,''));
 			
