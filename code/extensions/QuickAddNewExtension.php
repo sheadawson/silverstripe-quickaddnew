@@ -66,7 +66,7 @@ class QuickAddNewExtension extends Extension {
 		Requirements::javascript(QUICKADDNEW_MODULE . '/javascript/quickaddnew.js');
 		Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
 		Requirements::css(QUICKADDNEW_MODULE . '/css/quickaddnew.css');
-
+		Requirements::add_i18n_javascript(QUICKADDNEW_MODULE . '/javascript/lang');
 		if(!$fields){
 			if(singleton($class)->hasMethod('getAddNewFields')){
 				$fields = singleton($class)->getAddNewFields();
