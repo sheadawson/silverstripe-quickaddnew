@@ -142,7 +142,7 @@ class QuickAddNewExtension extends Extension {
 		}
 
 		$callback = $this->sourceCallback;
-		$items = $callback();
+		$items = $callback($obj);
 		$this->owner->setSource($items);
 
 		// if this field is a multiselect field, we add the new Object ID to the existing
