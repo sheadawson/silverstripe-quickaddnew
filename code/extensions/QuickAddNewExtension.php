@@ -99,7 +99,7 @@ class QuickAddNewExtension extends Extension {
 	 * @return Form
 	 **/
 	public function AddNewForm(){
-		$action 	= FormAction::create('doAddNew', 'Add')->setUseButtonTag('true');
+		$action 	= FormAction::create('doAddNew', _t('QUICKADDNEW.Add', 'Add'))->setUseButtonTag('true');
 
 		if(!$this->isFrontend){
 			$action->addExtraClass('ss-ui-action-constructive')->setAttribute('data-icon', 'accept');
