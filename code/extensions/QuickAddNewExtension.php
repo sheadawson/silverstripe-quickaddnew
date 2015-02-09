@@ -58,6 +58,11 @@ class QuickAddNewExtension extends Extension {
 		if(!is_callable($sourceCallback)){
 			throw new Exception('the useAddNew method must be passed a callable $sourceCallback parameter, ' . gettype($sourceCallback) . ' passed.');
 		}
+		
+		// if the user can't create this object type, don't modify the form
+		if (!singleton($class)->canCreate()) {
+			return $this->owner;
+		}
 
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
@@ -132,6 +137,9 @@ class QuickAddNewExtension extends Extension {
 	 **/
 	public function doAddNew($data, $form){
 		$obj = Object::create($this->addNewClass);
+		if (!$obj->canCreate()) {
+			return Security::permissionFailure(Controller::curr(), "You don't have permission to create this object");
+		}
 		$form->saveInto($obj);
 		
 		try {
