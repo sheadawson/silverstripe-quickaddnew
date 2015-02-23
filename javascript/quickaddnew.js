@@ -92,6 +92,8 @@ jQuery.entwine("quickaddnew", function($) {
 
 			dlg.load(this.getURL(), function(){
 				dlg.parent().removeClass("loading");
+				// set focus to first input element
+				dlg.find('form :input:visible:enabled:first').focus();
 			});
 		}
 	});
