@@ -18,7 +18,12 @@ jQuery.entwine("quickaddnew", function($) {
 		URL:  null,
 		onmatch: function() {
 			var self = this;
-
+			
+			//Check to see if quickaddnew has been bound to this field before, sometimes jQuery plugins like Select2 
+			//will trigger a binding a second time that we don't want.
+			if($(this).parents().children('.quickaddnew-button').length > 0) {
+				return;
+			}
 			// create add new button
 			var button = $("<button />")
 				.addClass()
@@ -26,12 +31,12 @@ jQuery.entwine("quickaddnew", function($) {
 				.attr('href', '#')
 				.addClass("quickaddnew-button ss-ui-button ss-ui-button-small")
 				.appendTo(self.parents('div:first'));
-
+		
 			// create dialog	
 			var dialog = $("<div />")
 				.addClass("quickaddnew-dialog")
-				.appendTo(self.parents('div:first'));	
-
+				.appendTo(self.parents('div:first'));
+			
 			this.setDialog(dialog);
 
 			// set URL
@@ -87,12 +92,16 @@ jQuery.entwine("quickaddnew", function($) {
 
 		showDialog: function(url) {
 			var dlg = this.getDialog();
+			// Check to see we have a dialog, other jquery plugins like Select2 can get bound to by accident
+			if (dlg !== null) {
+				dlg.empty().dialog("open").parent().addClass("loading");
 
-			dlg.empty().dialog("open").parent().addClass("loading");
-
-			dlg.load(this.getURL(), function(){
-				dlg.parent().removeClass("loading");
-			});
+				dlg.load(this.getURL(), function(){
+					dlg.parent().removeClass("loading");
+					// set focus to first input element
+					dlg.find('form :input:visible:enabled:first').focus();
+				});
+			}
 		}
 	});
 });
