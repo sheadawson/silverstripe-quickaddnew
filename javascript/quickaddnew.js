@@ -18,8 +18,8 @@ jQuery.entwine("quickaddnew", function($) {
 		URL:  null,
 		onmatch: function() {
 			var self = this;
-			
-			//Check to see if quickaddnew has been bound to this field before, sometimes jQuery plugins like Select2 
+
+			//Check to see if quickaddnew has been bound to this field before, sometimes jQuery plugins like Select2
 			//will trigger a binding a second time that we don't want.
 			if($(this).parents().children('.quickaddnew-button').length > 0) {
 				return;
@@ -31,12 +31,12 @@ jQuery.entwine("quickaddnew", function($) {
 				.attr('href', '#')
 				.addClass("quickaddnew-button ss-ui-button ss-ui-button-small")
 				.appendTo(self.parents('div:first'));
-		
-			// create dialog	
+
+			// create dialog
 			var dialog = $("<div />")
 				.addClass("quickaddnew-dialog")
 				.appendTo(self.parents('div:first'));
-			
+
 			this.setDialog(dialog);
 
 			// set URL
@@ -45,7 +45,7 @@ jQuery.entwine("quickaddnew", function($) {
 			var action = this.parents('form').attr('action').split('?', 2); //add support for url parameters e.g. ?locale=en_US when using Translatable
 			var dialogHTMLURL =  action[0] + '/field/' + fieldName + '/AddNewFormHTML' + '?' + action[1];
 			this.setURL(dialogHTMLURL.replace(/[\[\]']+/g,''));
-			
+
 			// configure the dialog
 			this.getDialog().data("field", this).dialog({
 				autoOpen: 	false,
@@ -55,23 +55,23 @@ jQuery.entwine("quickaddnew", function($) {
 				position: 	{ my: "center", at: "center", of: window }
 			});
 
-			// submit button loading state while form is submitting 
+			// submit button loading state while form is submitting
 			this.getDialog().on("click", "button", function() {
 				$(this).addClass("loading ui-state-disabled");
 			});
 
 			// handle dialog form submission
 			this.getDialog().on("submit", "form", function() {
-				
+
 				var dlg = self.getDialog().dialog(),
 					options = {};
 
 				// if this is a multiselect field, send the existing values
-				// along with the form submission so they can be included in the 
+				// along with the form submission so they can be included in the
 				// replacement field
 				if(self.val() && typeof self.val() === 'object'){
 					options.data = {
-						existing : self.val().join(',')	
+						existing : self.val().join(',')
 					}
 				}
 
