@@ -1,20 +1,23 @@
 {
-	"name": "sheadawson/quickaddnew",
-	"description": "A decorator for form fields that manage object relationships, to allow adding a new object on the fly through a dialog window. It can handle has_one, has_many or many_many relationships. At the moment it has been tested / works on DropdownField and ListboxField. It works both in the CMS and in the frontend.",
-	"type": "silverstripe-module",
-	"keywords": ["silverstripe", "forms"],
-	"homepage": "http://github.com/sheadawson/silverstripe-quickaddnew",
-	"authors": [
-	{
-		"name": "Shea Dawson",
-		"email": "shea@silverstripe.com.au"
-	}
-	],
-
-	"require":
-	{
-		"silverstripe/framework": "3.*",
-		"composer/installers": "*"
-	},
-	"replace": {"silverstripe/quickaddnew": "*"}
+    "name": "sheadawson/quickaddnew",
+    "description": "A decorator for form fields that manage object relationships, to allow adding a new object on the fly through a dialog window. It can handle has_one, has_many or many_many relationships. At the moment it has been tested / works on DropdownField and ListboxField. It works both in the CMS and in the frontend.",
+    "type": "silverstripe-module",
+    "keywords": [
+        "silverstripe",
+        "forms"
+    ],
+    "homepage": "http://github.com/sheadawson/silverstripe-quickaddnew",
+    "authors": [
+        {
+            "name": "Shea Dawson",
+            "email": "shea@silverstripe.com.au"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": "3.*",
+        "composer/installers": "*"
+    },
+    "replace": {
+        "silverstripe/quickaddnew": "*"
+    }
 }
