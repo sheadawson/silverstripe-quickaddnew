@@ -52,7 +52,7 @@ class QuickAddNewExtension extends Extension
      * @param FieldList $fields - Fields to create the object via dialog form - defaults to the object's getAddNewFields() method
      * @param RequiredFields $required - to create the validator for the dialog form
      * @param Boolean $isFrontend - If this is set to true, the css classes for the CMS ui will not be set of the form elements
-     * this also opens the opportunity to manipulate the form for Frontend uses via an extension 
+     * this also opens the opportunity to manipulate the form for Frontend uses via an extension
      * @return FormField $this->owner
      **/
     public function useAddNew($class, $sourceCallback, FieldList $fields = null, RequiredFields $required = null, $isFrontend = false)
@@ -60,7 +60,7 @@ class QuickAddNewExtension extends Extension
         if (!is_callable($sourceCallback)) {
             throw new Exception('the useAddNew method must be passed a callable $sourceCallback parameter, ' . gettype($sourceCallback) . ' passed.');
         }
-        
+
         // if the user can't create this object type, don't modify the form
         if (!singleton($class)->canCreate()) {
             return $this->owner;
@@ -89,7 +89,7 @@ class QuickAddNewExtension extends Extension
         }
 
         $this->owner->addExtraClass('quickaddnew-field');
-        
+
         $this->sourceCallback        = $sourceCallback;
         $this->isFrontend            = $isFrontend;
         $this->addNewClass            = $class;
@@ -145,7 +145,7 @@ class QuickAddNewExtension extends Extension
             return Security::permissionFailure(Controller::curr(), "You don't have permission to create this object");
         }
         $form->saveInto($obj);
-        
+
         try {
             $obj->write();
         } catch (Exception $e) {
