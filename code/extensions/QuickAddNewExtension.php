@@ -15,7 +15,7 @@ class QuickAddNewExtension extends Extension
 
 
     /**
-     * @var String
+     * @var string
      **/
     protected $addNewClass;
 
@@ -47,7 +47,7 @@ class QuickAddNewExtension extends Extension
 
     /**
      * Tell this form field to apply the add new UI and fucntionality
-     * @param String $class - the class name of the object being managed on the relationship
+     * @param string $class - the class name of the object being managed on the relationship
      * @param Function $sourceCallback - the function called to repopulate the field's source array
      * @param FieldList $fields - Fields to create the object via dialog form - defaults to the object's getAddNewFields() method
      * @param RequiredFields $required - to create the validator for the dialog form
@@ -125,7 +125,7 @@ class QuickAddNewExtension extends Extension
     /**
      * Returns the HTML of the AddNewForm for the dialog
      *
-     * @return String
+     * @return string
      **/
     public function AddNewFormHTML()
     {
@@ -136,7 +136,7 @@ class QuickAddNewExtension extends Extension
     /**
      * Handles adding the new object
      * Returns the updated FieldHolder of this form to replace the existing one
-     * @return String
+     * @return string
      **/
     public function doAddNew($data, $form)
     {
