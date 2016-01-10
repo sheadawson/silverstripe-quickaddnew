@@ -37,16 +37,18 @@ class QuickAddNewExtension extends Extension
      **/
     protected $isFrontend;
 
-
+    /**
+     * @var array
+     */
     public static $allowed_actions = array(
         'AddNewForm',
         'AddNewFormHTML',
         'doAddNew'
     );
 
-
     /**
      * Tell this form field to apply the add new UI and fucntionality
+     *
      * @param string $class - the class name of the object being managed on the relationship
      * @param Function $sourceCallback - the function called to repopulate the field's source array
      * @param FieldList $fields - Fields to create the object via dialog form - defaults to the object's getAddNewFields() method
@@ -55,10 +57,17 @@ class QuickAddNewExtension extends Extension
      * this also opens the opportunity to manipulate the form for Frontend uses via an extension
      * @return FormField $this->owner
      **/
-    public function useAddNew($class, $sourceCallback, FieldList $fields = null, RequiredFields $required = null, $isFrontend = false)
-    {
+    public function useAddNew(
+        $class,
+        $sourceCallback,
+        FieldList $fields = null,
+        RequiredFields $required = null,
+        $isFrontend = false
+    ) {
         if (!is_callable($sourceCallback)) {
-            throw new Exception('the useAddNew method must be passed a callable $sourceCallback parameter, ' . gettype($sourceCallback) . ' passed.');
+            throw new Exception(
+                'the useAddNew method must be passed a callable $sourceCallback parameter, ' . gettype($sourceCallback) . ' passed.'
+            );
         }
 
         // if the user can't create this object type, don't modify the form
@@ -113,8 +122,8 @@ class QuickAddNewExtension extends Extension
             $action->addExtraClass('ss-ui-action-constructive')->setAttribute('data-icon', 'accept');
         }
 
-        $actions    = FieldList::create($action);
-        $form        = Form::create($this->owner, 'AddNewForm', $this->addNewFields, $actions, $this->addNewRequiredFields);
+        $actions = FieldList::create($action);
+        $form = Form::create($this->owner, 'AddNewForm', $this->addNewFields, $actions, $this->addNewRequiredFields);
 
         $this->owner->extend('updateQuickAddNewForm', $form);
 
@@ -136,6 +145,7 @@ class QuickAddNewExtension extends Extension
     /**
      * Handles adding the new object
      * Returns the updated FieldHolder of this form to replace the existing one
+     *
      * @return string
      **/
     public function doAddNew($data, $form)
@@ -173,7 +183,9 @@ class QuickAddNewExtension extends Extension
         return $this->owner->FieldHolder();
     }
 
-
+    /**
+     * @return boolean
+     */
     public function getIsFrontend()
     {
         return $this->isFrontend;
