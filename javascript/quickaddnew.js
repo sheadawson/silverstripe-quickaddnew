@@ -26,9 +26,9 @@ jQuery.entwine("quickaddnew", function($) {
 			}
 			// create add new button
 			var button = $("<button />")
-				.addClass()
-				.text(ss.i18n._t('QUICKADDNEW.AddNew'))
+				.attr('type', 'button')
 				.attr('href', '#')
+				.text(ss.i18n._t('QUICKADDNEW.AddNew'))
 				.addClass("quickaddnew-button ss-ui-button ss-ui-button-small")
 				.appendTo(self.parents('div:first'));
 
