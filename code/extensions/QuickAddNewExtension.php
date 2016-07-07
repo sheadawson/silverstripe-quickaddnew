@@ -64,6 +64,14 @@ class QuickAddNewExtension extends Extension {
 			return $this->owner;
 		}
 
+		// NOTE(Jake): Do not try to move these Requirements to onBeforeRender extension on FormField. 
+		//			   There's a bug on ListboxField where it doesn't call it (at time of writing, 08-07-2016)
+		//
+		//			   Ideally, you'd want it there so you can remove the field later and not get
+		//			   all this unnecessary JS/CSS on the frontend.
+		//
+		//			   https://github.com/silverstripe/silverstripe-framework/pull/5780
+		//
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui.js');
