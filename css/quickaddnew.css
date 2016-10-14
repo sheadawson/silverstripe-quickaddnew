@@ -1,10 +1,17 @@
-.cms .quickaddnew-field{
-	position: relative;
+.cms .quickaddnew-field > .middleColumn {
+	/* stop gaps between inline blocks */
+	font-size: 0;
+}
+.cms .quickaddnew-field .chzn-container {
+	max-width: 437px; /* 512px - 75px */
 }
 .cms .quickaddnew-button{
-	position: absolute;
-	top: 5px;
+	position: relative;
+	top: 4px;
+	z-index: 0;
+	display: inline-block;
 	margin-left: 5px;
+	vertical-align: top;
 }
 
 .quickaddnew-dialog{
