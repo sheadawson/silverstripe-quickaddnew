@@ -43,8 +43,17 @@ jQuery.entwine("quickaddnew", function($) {
 			var fieldName = this.attr('name');
 			if (this.hasClass('checkboxset')) fieldName = this.find('input:checkbox').attr('name').replace(/\[[0-9]+\]/g, '');
 			var action = this.parents('form').attr('action').split('?', 2); //add support for url parameters e.g. ?locale=en_US when using Translatable
-			var dialogHTMLURL =  action[0] + '/field/' + fieldName + '/AddNewFormHTML' + '?' + action[1];
-			this.setURL(dialogHTMLURL.replace(/[\[\]']+/g,''));
+			
+			var dialogHTMLURL = this.data('quickaddnew-action');
+			if (!dialogHTMLURL) {
+				// Fallback to default action
+				dialogHTMLURL = action[0] + '/field/' + fieldName + '/AddNewFormHTML';
+			}
+			if (action[1]) {
+				dialogHTMLURL += '?' + action[1];
+			}
+			dialogHTMLURL = dialogHTMLURL.replace(/[\[\]']+/g,'');
+			this.setURL(dialogHTMLURL);
 
 			// configure the dialog
 			this.getDialog().data("field", this).dialog({

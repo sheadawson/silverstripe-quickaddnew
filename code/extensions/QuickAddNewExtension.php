@@ -7,12 +7,20 @@
  **/
 class QuickAddNewExtension extends Extension
 {
+    /**
+     * @var boolean
+     */
+    protected $addNewEnabled = false;
 
     /**
      * @var FieldList
      **/
     protected $addNewFields;
 
+    /**
+     * @var string
+     */
+    protected $addNewAction;
 
     /**
      * @var string
@@ -98,6 +106,7 @@ class QuickAddNewExtension extends Extension
         }
 
         $this->owner->addExtraClass('quickaddnew-field');
+        $this->addNewEnabled = true;
 
         $this->sourceCallback        = $sourceCallback;
         $this->isFrontend            = $isFrontend;
@@ -108,6 +117,26 @@ class QuickAddNewExtension extends Extension
         return $this->owner;
     }
 
+    /**
+     * @return boolean
+     */
+    public function hasAddNewButton() {
+        return $this->addNewEnabled;
+    }
+
+    /**
+     *
+     */
+    public function updateAttributes(&$attributes) {
+        if (!$this->addNewFields) {
+            // Ignore if not using QuickAddNew
+            return;
+        }
+        $action = $this->owner->Link('AddNewFormHTML');
+        // Remove [] for ListboxSetField/CheckboxSetField
+        $action = preg_replace("/[\[\]']+/", "", $action);
+        $attributes['data-quickaddnew-action'] = $action;
+    }
 
     /**
      * The AddNewForm for the dialog window
