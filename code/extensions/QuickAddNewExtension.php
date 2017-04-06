@@ -7,12 +7,15 @@
  **/
 class QuickAddNewExtension extends Extension
 {
+    /**
+     * @var boolean
+     */
+    protected $addNewEnabled = false;
 
     /**
      * @var FieldList
      **/
     protected $addNewFields;
-
 
     /**
      * @var string
@@ -98,6 +101,7 @@ class QuickAddNewExtension extends Extension
         }
 
         $this->owner->addExtraClass('quickaddnew-field');
+        $this->addNewEnabled = true;
 
         $this->sourceCallback        = $sourceCallback;
         $this->isFrontend            = $isFrontend;
@@ -108,6 +112,33 @@ class QuickAddNewExtension extends Extension
         return $this->owner;
     }
 
+    /**
+     * @return boolean
+     */
+    public function hasAddNewButton() {
+        return $this->addNewEnabled;
+    }
+
+    /**
+     *
+     */
+    public function updateAttributes(&$attributes) {
+        if (!$this->addNewFields) {
+            // Ignore if not using QuickAddNew
+            return;
+        }
+        // NOTE(Jake): This below comment will be necessary if 
+        //             $this->owner->setForm($form); is needed in 'doAddNew'
+        /*$form = $this->owner->getForm();
+        if ($this->owner === $form->getController()) {
+            // Ignore action to avoid cyclic calls with Link() function
+            return;
+        }*/
+        $action = $this->owner->Link('AddNewFormHTML');
+        // Remove [] for ListboxSetField/CheckboxSetField
+        $action = preg_replace("/[\[\]']+/", "", $action);
+        $attributes['data-quickaddnew-action'] = $action;
+    }
 
     /**
      * The AddNewForm for the dialog window
@@ -179,7 +210,8 @@ class QuickAddNewExtension extends Extension
         }
 
         $this->owner->setValue($value);
-        $this->owner->setForm($form);
+        // NOTE(Jake): Below line causes cyclic issues, I assume it's not necessary.
+        //$this->owner->setForm($form);
         return $this->owner->FieldHolder();
     }
 

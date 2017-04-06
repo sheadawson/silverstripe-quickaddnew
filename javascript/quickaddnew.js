@@ -43,8 +43,17 @@ jQuery.entwine("quickaddnew", function($) {
 			var fieldName = this.attr('name');
 			if (this.hasClass('checkboxset')) fieldName = this.find('input:checkbox').attr('name').replace(/\[[0-9]+\]/g, '');
 			var action = this.parents('form').attr('action').split('?', 2); //add support for url parameters e.g. ?locale=en_US when using Translatable
-			var dialogHTMLURL =  action[0] + '/field/' + fieldName + '/AddNewFormHTML' + '?' + action[1];
-			this.setURL(dialogHTMLURL.replace(/[\[\]']+/g,''));
+			
+			var dialogHTMLURL = this.data('quickaddnew-action');
+			if (!dialogHTMLURL) {
+				// Fallback to default action
+				dialogHTMLURL = action[0] + '/field/' + fieldName + '/AddNewFormHTML';
+			}
+			if (action[1]) {
+				dialogHTMLURL += '?' + action[1];
+			}
+			dialogHTMLURL = dialogHTMLURL.replace(/[\[\]']+/g,'');
+			this.setURL(dialogHTMLURL);
 
 			// configure the dialog
 			this.getDialog().data("field", this).dialog({
@@ -55,16 +64,14 @@ jQuery.entwine("quickaddnew", function($) {
 				position: 	{ my: "center", at: "center", of: window }
 			});
 
-			// submit button loading state while form is submitting
-			this.getDialog().on("click", "button", function() {
-				$(this).addClass("loading ui-state-disabled");
-			});
-
 			// handle dialog form submission
 			this.getDialog().on("submit", "form", function() {
 
 				var dlg = self.getDialog().dialog(),
 					options = {};
+
+				var $submitButtons = $(this).find('input[type="submit"], button[type="submit"]');
+				$submitButtons.addClass("loading ui-state-disabled");
 
 				// if this is a multiselect field, send the existing values
 				// along with the form submission so they can be included in the
@@ -72,22 +79,40 @@ jQuery.entwine("quickaddnew", function($) {
 				if(self.val() && typeof self.val() === 'object'){
 					options.data = {
 						existing : self.val().join(',')
-					}
+					};
 				}
 
-				options.success = function(response) {
-					if($(response).is(".field")) {
-						self.getDialog().empty().dialog("close");
-						self.parents('.field:first').replaceWith(response);
+				options.success = function(res) {
+					var $response = $(res);
+					if($response.is('.field')) {
+						self.getDialog().empty().dialog('close');
+						var $newInput = $response.find(self[0].tagName);
+						// Replace <select> <option>'s rather than the entire HTML block
+						// to avoid JS hooks being lost on the frontend.
+						if ($newInput[0] && $newInput[0].tagName === 'SELECT') {
+							self.html($newInput.children());
+
+							// Support legacy and new chosen
+							self.trigger('liszt:updated').trigger('chosen:updated');
+							// Support select2
+							self.trigger('change.select2');
+						} else {
+							self.parents('.field:first').replaceWith(res);
+						}
 					} else {
-						self.getDialog().html(response);
+						self.getDialog().html(res);
 					}
-				}
+				};
+				options.complete = function() {
+					$submitButtons.removeClass("loading ui-state-disabled");
+				};
 
 				$(this).ajaxSubmit(options);
 
 				return false;
 			});
+
+			this._super();
 		},
 
 		showDialog: function(url) {
@@ -102,6 +127,7 @@ jQuery.entwine("quickaddnew", function($) {
 					dlg.find('form :input:visible:enabled:first').focus();
 				});
 			}
+			this._super();
 		}
 	});
 });
