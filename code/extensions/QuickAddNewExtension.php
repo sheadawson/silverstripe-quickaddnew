@@ -19,11 +19,6 @@ class QuickAddNewExtension extends Extension
 
     /**
      * @var string
-     */
-    protected $addNewAction;
-
-    /**
-     * @var string
      **/
     protected $addNewClass;
 
