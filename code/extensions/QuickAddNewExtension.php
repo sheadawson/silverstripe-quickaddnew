@@ -81,7 +81,6 @@ class QuickAddNewExtension extends Extension
         Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
         Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
         Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui.js');
-        Requirements::javascript(THIRDPARTY_DIR . '/jquery-validate/lib/jquery.form.js');
         Requirements::javascript(QUICKADDNEW_MODULE . '/javascript/quickaddnew.js');
         Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
         Requirements::css(QUICKADDNEW_MODULE . '/css/quickaddnew.css');
