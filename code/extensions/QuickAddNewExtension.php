@@ -180,7 +180,7 @@ class QuickAddNewExtension extends Extension
      **/
     public function doAddNew($data, $form)
     {
-        $obj = Object::create($this->addNewClass);
+        $obj = SS_Object::create($this->addNewClass);
         if (!$obj->canCreate()) {
             return Security::permissionFailure(Controller::curr(), "You don't have permission to create this object");
         }
