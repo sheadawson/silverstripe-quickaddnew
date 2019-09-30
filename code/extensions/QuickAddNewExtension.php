@@ -126,7 +126,7 @@ class QuickAddNewExtension extends Extension
             // Ignore if not using QuickAddNew
             return;
         }
-        // NOTE(Jake): This below comment will be necessary if 
+        // NOTE(Jake): This below comment will be necessary if
         //             $this->owner->setForm($form); is needed in 'doAddNew'
         /*$form = $this->owner->getForm();
         if ($this->owner === $form->getController()) {
@@ -180,7 +180,7 @@ class QuickAddNewExtension extends Extension
      **/
     public function doAddNew($data, $form)
     {
-        $obj = Object::create($this->addNewClass);
+        $obj = SS_Object::create($this->addNewClass);
         if (!$obj->canCreate()) {
             return Security::permissionFailure(Controller::curr(), "You don't have permission to create this object");
         }
