@@ -1,11 +1,22 @@
 <?php
+
+use SilverStripe\Core\Extension;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\View\Requirements;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\Forms\Form;
+use SilverStripe\Security\Security;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Injector\Injector;
+
 /**
  * QuickAddNewExtension
  *
  * @package silverstripe-quickaddnew
  * @author shea@silverstripe.com.au
  **/
-class QuickAddNewExtension extends Extension
+class QuickAddNewExtension extends Extension // phpcs:ignore
 {
     /**
      * @var boolean
@@ -24,7 +35,7 @@ class QuickAddNewExtension extends Extension
 
 
     /**
-     * @var Function
+     * @var callable
      **/
     protected $sourceCallback;
 
@@ -36,27 +47,32 @@ class QuickAddNewExtension extends Extension
 
 
     /**
-     * @var Boolean
+     * @var bool
      **/
     protected $isFrontend;
 
     /**
      * @var array
      */
-    public static $allowed_actions = array(
+    private static $allowed_actions = array(
         'AddNewForm',
         'AddNewFormHTML',
         'doAddNew'
     );
 
     /**
+     * @var bool
+     */
+    protected static $is_creating = false;
+
+    /**
      * Tell this form field to apply the add new UI and fucntionality
      *
-     * @param string $class - the class name of the object being managed on the relationship
-     * @param Function $sourceCallback - the function called to repopulate the field's source array
+     * @param class-string $class - the class name of the object being managed on the relationship
+     * @param callable $sourceCallback - the function called to repopulate the field's source array
      * @param FieldList $fields - Fields to create the object via dialog form - defaults to the object's getAddNewFields() method
      * @param RequiredFields $required - to create the validator for the dialog form
-     * @param Boolean $isFrontend - If this is set to true, the css classes for the CMS ui will not be set of the form elements
+     * @param bool $isFrontend - If this is set to true, the css classes for the CMS ui will not be set of the form elements
      * this also opens the opportunity to manipulate the form for Frontend uses via an extension
      * @return FormField $this->owner
      **/
@@ -73,40 +89,47 @@ class QuickAddNewExtension extends Extension
             );
         }
 
+        $sng = singleton($class);
+
         // if the user can't create this object type, don't modify the form
-        if (!singleton($class)->canCreate()) {
+        if (!$sng->canCreate()) {
             return $this->owner;
         }
 
-        Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-        Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-        Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui.js');
-        Requirements::javascript(QUICKADDNEW_MODULE . '/javascript/quickaddnew.js');
-        Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
-        Requirements::css(QUICKADDNEW_MODULE . '/css/quickaddnew.css');
-        Requirements::add_i18n_javascript(QUICKADDNEW_MODULE . '/javascript/lang');
+        if (self::$is_creating) {
+            return $this->owner;
+        }
+        // Avoid nested loop if you display yourself, eg a Tag creating a Tag
+        self::$is_creating = true;
+
+        Requirements::javascript('restruct/quickaddnew:/client/javascript/quickaddnew.js');
+        Requirements::css('restruct/quickaddnew:/client/css/quickaddnew.css');
+        Requirements::add_i18n_javascript('restruct/quickaddnew:/client/javascript/lang');
+
         if (!$fields) {
-            if (singleton($class)->hasMethod('getAddNewFields')) {
-                $fields = singleton($class)->getAddNewFields();
+            if ($sng->hasMethod('getAddNewFields')) {
+                $fields =  $sng->getAddNewFields();
             } else {
-                $fields = singleton($class)->getCMSFields();
+                $fields = $sng->getCMSFields();
             }
         }
 
         if (!$required) {
-            if (singleton($class)->hasMethod('getAddNewValidator')) {
-                $required = singleton($class)->getAddNewValidator();
+            if ($sng->hasMethod('getAddNewValidator')) {
+                $required = $sng->getAddNewValidator();
             }
         }
 
         $this->owner->addExtraClass('quickaddnew-field');
         $this->addNewEnabled = true;
 
-        $this->sourceCallback        = $sourceCallback;
-        $this->isFrontend            = $isFrontend;
-        $this->addNewClass            = $class;
-        $this->addNewFields        = $fields;
+        $this->sourceCallback = $sourceCallback;
+        $this->isFrontend = $isFrontend;
+        $this->addNewClass = $class;
+        $this->addNewFields = $fields;
         $this->addNewRequiredFields = $required;
+
+        self::$is_creating = false;
 
         return $this->owner;
     }
@@ -114,25 +137,25 @@ class QuickAddNewExtension extends Extension
     /**
      * @return boolean
      */
-    public function hasAddNewButton() {
+    public function hasAddNewButton()
+    {
         return $this->addNewEnabled;
     }
 
     /**
      *
      */
-    public function updateAttributes(&$attributes) {
+    public function updateAttributes(&$attributes)
+    {
         if (!$this->addNewFields) {
             // Ignore if not using QuickAddNew
             return;
         }
-        // NOTE(Jake): This below comment will be necessary if
-        //             $this->owner->setForm($form); is needed in 'doAddNew'
-        /*$form = $this->owner->getForm();
+        $form = $this->owner->getForm();
         if ($this->owner === $form->getController()) {
             // Ignore action to avoid cyclic calls with Link() function
             return;
-        }*/
+        }
         $action = $this->owner->Link('AddNewFormHTML');
         // Remove [] for ListboxSetField/CheckboxSetField
         $action = preg_replace("/[\[\]']+/", "", $action);
@@ -146,10 +169,10 @@ class QuickAddNewExtension extends Extension
      **/
     public function AddNewForm()
     {
-        $action    = FormAction::create('doAddNew', _t('QUICKADDNEW.Add', 'Add'))->setUseButtonTag('true');
+        $action = FormAction::create('doAddNew', _t('QUICKADDNEW.Add', 'Add'))->setUseButtonTag('true');
 
         if (!$this->isFrontend) {
-            $action->addExtraClass('ss-ui-action-constructive')->setAttribute('data-icon', 'accept');
+            $action->addExtraClass('ss-ui-action-constructive btn btn-success font-icon font-icon-save');
         }
 
         $actions = FieldList::create($action);
@@ -180,7 +203,7 @@ class QuickAddNewExtension extends Extension
      **/
     public function doAddNew($data, $form)
     {
-        $obj = SS_Object::create($this->addNewClass);
+        $obj = Injector::inst()->create($this->addNewClass);
         if (!$obj->canCreate()) {
             return Security::permissionFailure(Controller::curr(), "You don't have permission to create this object");
         }
@@ -209,8 +232,9 @@ class QuickAddNewExtension extends Extension
         }
 
         $this->owner->setValue($value);
-        // NOTE(Jake): Below line causes cyclic issues, I assume it's not necessary.
-        //$this->owner->setForm($form);
+        if (!$this->owner->getForm()) {
+            $this->owner->setForm($form);
+        }
         return $this->owner->FieldHolder();
     }
 

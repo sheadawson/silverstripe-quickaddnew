@@ -1,0 +1,51 @@
+.cms .quickaddnew-field>.middleColumn {
+    /* stop gaps between inline blocks */
+    font-size: 0;
+}
+
+.cms .quickaddnew-field .chzn-container,
+.cms .quickaddnew-field .chosen-container {
+    max-width: min(437px, 60vw);
+    /* 512px - 75px */
+}
+
+.cms .quickaddnew-button {
+    position: relative;
+    top: 4px;
+    z-index: 0;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: top;
+}
+
+.quickaddnew-dialog {
+    max-height: min(80vh, 600px);
+    overflow: auto;
+}
+
+/* Fixes jquery ui styles that are broken in ss 5 */
+.ui-dialog .ui-dialog-titlebar-close {
+    width: 30px;
+    height: 30px;
+    background: none;
+    z-index: 9999;
+    right: -12px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+    border: 0;
+    opacity: 0.8;
+}
+
+.ui-widget-header .ui-icon-closethick {
+    top: 8px;
+    left: 8px;
+}
+
+.ui-widget-header .ui-button-icon.ui-icon-closethick {
+    background-image: url('/_resources/vendor/silverstripe/admin/client/dist/images/sprite-sprites-32x32.png');
+}
+
+.ui-dialog-titlebar-close .ui-icon {
+    pointer-events: none;
+}
