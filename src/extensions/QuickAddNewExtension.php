@@ -102,9 +102,9 @@ class QuickAddNewExtension extends Extension // phpcs:ignore
         // Avoid nested loop if you display yourself, eg a Tag creating a Tag
         self::$is_creating = true;
 
-        Requirements::javascript('restruct/quickaddnew:/client/javascript/quickaddnew.js');
-        Requirements::css('restruct/quickaddnew:/client/css/quickaddnew.css');
-        Requirements::add_i18n_javascript('restruct/quickaddnew:/client/javascript/lang');
+        Requirements::javascript('sheadawson/quickaddnew:/client/javascript/quickaddnew.js');
+        Requirements::css('sheadawson/quickaddnew:/client/css/quickaddnew.css');
+        Requirements::add_i18n_javascript('sheadawson/quickaddnew:/client/javascript/lang');
 
         if (!$fields) {
             if ($sng->hasMethod('getAddNewFields')) {
