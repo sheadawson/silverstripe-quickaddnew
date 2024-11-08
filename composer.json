@@ -29,8 +29,7 @@
         ]
     },
     "replace": {
-        "silverstripe/quickaddnew": "*",
-        "sheadawson/quickaddnew": "*"
+        "silverstripe/quickaddnew": "*"
     },
     "config": {
         "allow-plugins": {
