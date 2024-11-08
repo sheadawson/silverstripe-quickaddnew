@@ -38,10 +38,20 @@ $field = ListboxField::create('MyObjects', 'My Objects', $source());
 $field = CheckboxSetField::create('MyObjects', 'My Objects', $source());
 ```
 
-Next, we can tell the field to use and configure quickaddnew. The first parameter is the class name of the object that will be created. The second is the $source closure  Note: See QuickAddNewExtension::useAddNew() for the list of configurations parameters available. These allow you to customise the fields and required fields (for validation) for the dialog. By default the object class's getAddNewFields() or getCMSFields() methods are used
+Next, we can tell the field to use and configure quickaddnew with `useAddNew`.
+- The first parameter is the class name of the object that will be created.
+- The second is the $source closure
+- (optional) The third allows you to pass a specific set of fields to display in the dialog
+- (optional) The fourth allows you to pass a validator
+- (optional) The fifth allows you to specify if this is a frontend field
+
+These allow you to customise the fields and required fields (for validation) for the dialog.
+By default the object class's `getAddNewFields()` or `getCMSFields()` methods are used
 
 ```php
 $field->useAddNew('MyObject', $source);
+// or...
+$field->useAddNew('MyObject', $source, $fields, $required, $isFrontend);
 ```
 
 Add the field to your FieldList
@@ -49,10 +59,3 @@ Add the field to your FieldList
 ```php
 $fields->addFieldToTab('Root.Main', $field);
 ```
-
-Advanced usage
---------
-
-By default, the dialog will display all fields from `getCMSFields`. You may
-want to implement a `getAddNewFields` that returns only a specific set of fields to display
-in the creation dialog.
