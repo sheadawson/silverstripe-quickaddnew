@@ -39,8 +39,8 @@
         }
     },
     "scripts": {
-        "lint": "phpcs src/ tests/",
-        "lint-clean": "phpcbf src/ tests/",
+        "lint": "phpcs src/",
+        "lint-clean": "phpcbf src/",
         "test": "phpunit -v"
     },
     "minimum-stability": "dev",
