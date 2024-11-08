@@ -25,16 +25,16 @@ jQuery.entwine("quickaddnew", function ($) {
                 return;
             }
             // create add new button
+            var parentDiv = self.parents("div:first");
             var button = $("<button />")
                 .attr("type", "button")
                 .attr("href", "#")
                 .text(ss.i18n._t("QUICKADDNEW.AddNew"))
                 .addClass("quickaddnew-button ss-ui-button ss-ui-button-small btn btn-secondary")
-                .appendTo(self.parents("div:first"));
+                .appendTo(parentDiv);
 
             // create dialog
-            var dialog = $("<div />").addClass("quickaddnew-dialog").appendTo(self.parents("div:first"));
-
+            var dialog = $("<div />").addClass("quickaddnew-dialog").appendTo(parentDiv);
             this.setDialog(dialog);
 
             // set URL
@@ -72,8 +72,8 @@ jQuery.entwine("quickaddnew", function ($) {
 
             // handle dialog form submission
             this.getDialog().on("submit", "form", function () {
-                var dlg = self.getDialog().dialog(),
-                    options = {};
+                var dlg = self.getDialog().dialog();
+                var options = {};
 
                 var $submitButtons = $(this).find('input[type="submit"], button[type="submit"]');
                 $submitButtons.addClass("loading ui-state-disabled");
@@ -84,6 +84,15 @@ jQuery.entwine("quickaddnew", function ($) {
                 if (self.val() && typeof self.val() === "object") {
                     options.data = {
                         existing: self.val().join(","),
+                    };
+                }
+                // if it's a checkboxset field, send the existing values
+                // in this case, self is a div
+                if (self.hasClass('checkboxset')) {
+                    options.data = {
+                        existing: self.find('input:checked').map(function() {
+                            return this.value;
+                        }).get().join()
                     };
                 }
 

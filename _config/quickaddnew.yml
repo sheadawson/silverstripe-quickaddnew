@@ -8,3 +8,6 @@ SilverStripe\Forms\DropdownField:
 SilverStripe\Forms\ListboxField:
   extensions:
     - 'QuickAddNewExtension'
+SilverStripe\Forms\CheckboxSetField:
+  extensions:
+    - 'QuickAddNewExtension'
