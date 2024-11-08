@@ -7,9 +7,4 @@
       <directory suffix=".php">tests/</directory>
     </exclude>
   </coverage>
-  <testsuites>
-    <testsuite name="Default">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
 </phpunit>
