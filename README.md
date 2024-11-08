@@ -11,6 +11,8 @@ Requirements
 
 SilverStripe 4/5
 
+For SilverStripe, check branch 1.1
+
 Usage
 --------
 
