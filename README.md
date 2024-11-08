@@ -32,6 +32,10 @@ Then we can create the form field, calling the closure as the source argument
 
 ```php
 $field = DropdownField::create('MyObjectID', 'My Object', $source());
+// or...
+$field = ListboxField::create('MyObjects', 'My Objects', $source());
+// or...
+$field = CheckboxSetField::create('MyObjects', 'My Objects', $source());
 ```
 
 Next, we can tell the field to use and configure quickaddnew. The first parameter is the class name of the object that will be created. The second is the $source closure  Note: See QuickAddNewExtension::useAddNew() for the list of configurations parameters available. These allow you to customise the fields and required fields (for validation) for the dialog. By default the object class's getAddNewFields() or getCMSFields() methods are used
@@ -45,3 +49,10 @@ Add the field to your FieldList
 ```php
 $fields->addFieldToTab('Root.Main', $field);
 ```
+
+Advanced usage
+--------
+
+By default, the dialog will display all fields from `getCMSFields`. You may
+want to implement a `getAddNewFields` that returns only a specific set of fields to display
+in the creation dialog.

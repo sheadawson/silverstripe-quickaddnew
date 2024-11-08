@@ -66,7 +66,7 @@ class QuickAddNewExtension extends Extension // phpcs:ignore
     protected static $is_creating = false;
 
     /**
-     * Tell this form field to apply the add new UI and fucntionality
+     * Tell this form field to apply the add new UI and functionality
      *
      * @param class-string $class - the class name of the object being managed on the relationship
      * @param callable $sourceCallback - the function called to repopulate the field's source array
