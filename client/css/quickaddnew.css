@@ -3,6 +3,12 @@
     font-size: 0;
 }
 
+.cms .quickaddnew-field .ss-searchable-dropdown-field {
+    display: inline-block;
+    width: 437px;
+}
+
+.cms .quickaddnew-field .ss-searchable-dropdown-field,
 .cms .quickaddnew-field .chzn-container,
 .cms .quickaddnew-field .chosen-container {
     max-width: min(437px, 60vw);

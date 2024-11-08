@@ -4,7 +4,7 @@ silverstripe-quickaddnew
 What is it?
 --------
 
-A decorator for form fields that manage object relationships, to allow adding a new object on the fly through a dialog window. It can handle `has_one`,`has_many` or `many_many` relationships. At the moment it has been tested / works on `DropdownField`, `ListboxField` and `CheckboxSetField`. It works both in the CMS and in the frontend.
+A decorator for form fields that manage object relationships, to allow adding a new object on the fly through a dialog window. It can handle `has_one`,`has_many` or `many_many` relationships. At the moment it has been tested / works on `DropdownField` (and `SearchableDropdownField`), `ListboxField` and `CheckboxSetField`. It works both in the CMS and in the frontend.
 
 ![screenshot](screenshot.png)
 
