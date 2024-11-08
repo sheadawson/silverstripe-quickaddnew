@@ -1,9 +1,10 @@
 ---
 Name: quickaddnew
+After: "#corefieldtypes"
 ---
-DropdownField:
+SilverStripe\Forms\DropdownField:
   extensions:
-    ['QuickAddNewExtension']
-ListboxField:
+    - 'QuickAddNewExtension'
+SilverStripe\Forms\ListboxField:
   extensions:
-    ['QuickAddNewExtension']
+    - 'QuickAddNewExtension'
