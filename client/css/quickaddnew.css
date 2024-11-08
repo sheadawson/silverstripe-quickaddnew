@@ -49,3 +49,7 @@
 .ui-dialog-titlebar-close .ui-icon {
     pointer-events: none;
 }
+
+.ui-dialog .tab-content {
+    clear: both;
+}
